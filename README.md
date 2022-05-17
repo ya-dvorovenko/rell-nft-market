@@ -3,6 +3,12 @@
 ## Video how app working:
 https://www.dropbox.com/s/szgvnhf4a6ds3pd/rellDemo.mov?dl=0
 
+## How to start
+1. Install npm packages via yarn/npm
+2. Use `.rell` code from "rell/src/main.rell" with Rell node
+3. Connect Client to node using params in "src/constants" NODE_CONNECTION.URL and NODE_CONNECTION.RID
+4. "yarn start" to start client app
+
 ## Functionality
 ### User
 1. User registration
