@@ -1,0 +1,18 @@
+.header {
+  width: 100%;
+  border: 1px solid gray;
+  padding: 30px 20px;
+  display: flex;
+  justify-content: space-between;
+  text-align: right;
+}
+
+.header .logo {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.header .logoutButton {
+  text-decoration: underline;
+  cursor: pointer;
+}

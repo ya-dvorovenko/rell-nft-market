@@ -1,0 +1,4 @@
+1. Add update Tokens list update mechanism
+2. Add user update mechanism
+3. Add service to work with Storage (create facade)
+4. Add error handling
