@@ -1,5 +1,8 @@
 # Rell NFT marketplace
 
+## Video how app working:
+https://www.dropbox.com/s/szgvnhf4a6ds3pd/rellDemo.mov?dl=0
+
 ## Functionality
 ### User
 1. User registration
