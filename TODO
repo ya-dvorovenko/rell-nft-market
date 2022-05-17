@@ -2,3 +2,4 @@
 2. Add user update mechanism
 3. Add service to work with Storage (create facade)
 4. Add error handling
+5. Extract auth logic to auth provider (HOC)

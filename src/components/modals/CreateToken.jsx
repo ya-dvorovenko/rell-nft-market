@@ -21,29 +21,31 @@ export const CreateToken = ({ closeModal }) => {
     closeModal();
   }
 
+  if (loading) {
+    return <div>Loading</div>
+  }
+
   return (
     <div className="createTokenModal modal">
-      { loading ? <div>Loading</div> : (
-        <form className="createForm" onSubmit={handleSubmit}>
-          <div className="closeModal" onClick={closeModal}>X</div>
-          <h2>Create Token</h2>
-          <div className="inputContainer">
-            <label htmlFor="name">Name</label>
-            <input id="name" onChange={(e) => setToken({ ...token, name: e.target.value })} type="text" value={token.name} />
-          </div>
-          <div className="inputContainer">
-            <label htmlFor="name">SRC</label>
-            <input id="name" onChange={(e) => setToken({ ...token, src: e.target.value })} type="text" value={token.src} />
-          </div>
-          <div className="inputContainer">
-            <label htmlFor="price">Price</label>
-            <input id="price" onChange={(e) => setToken({ ...token, price: e.target.value })} type="number" value={token.price} />
-          </div>
-          {token.src && <img className="imagePreview" src={token.src} alt="imageUrl" />}
-          <button className="modalSubmit" type="submit">
-            OK
-          </button>
-        </form>
-      )}
+      <form className="createForm" onSubmit={handleSubmit}>
+        <div className="closeModal" onClick={closeModal}>X</div>
+        <h2>Create Token</h2>
+        <div className="inputContainer">
+          <label htmlFor="name">Name</label>
+          <input id="name" onChange={(e) => setToken({ ...token, name: e.target.value })} type="text" value={token.name} />
+        </div>
+        <div className="inputContainer">
+          <label htmlFor="name">SRC</label>
+          <input id="name" onChange={(e) => setToken({ ...token, src: e.target.value })} type="text" value={token.src} />
+        </div>
+        <div className="inputContainer">
+          <label htmlFor="price">Price</label>
+          <input id="price" onChange={(e) => setToken({ ...token, price: e.target.value })} type="number" value={token.price} />
+        </div>
+        {token.src && <img className="imagePreview" src={token.src} alt="imageUrl" />}
+        <button className="modalSubmit" type="submit">
+          OK
+        </button>
+      </form>
     </div>
   )}

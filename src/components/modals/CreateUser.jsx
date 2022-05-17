@@ -30,32 +30,35 @@ export const CreateUser = ({ closeModal }) => {
     closeModal();
   }
 
+  if (loading) {
+    return <div>Loading</div>
+  }
+
   return (
     <div className="createUserModal modal">
-      { loading ? <div>Loading</div> : (
-        <form className="createForm" onSubmit={handleSubmit}>
-          <div className="closeModal" onClick={closeModal}>X</div>
-          <h2>Create User</h2>
-          <div className="inputContainer">
-            <label htmlFor="username">Username</label>
-            <input id="username" onChange={(e) => setUser({ ...user, username: e.target.value })} type="text" value={user.username} />
-          </div>
-          <div className="inputContainer">
-            <label htmlFor="shareTokens">Tokens to share</label>
-            <input id="shareTokens" onChange={(e) => setUser({ ...user, shareTokens: e.target.value })} type="number" value={user.shareTokens} />
-          </div>
-          <div className="inputContainer">
-            <label htmlFor="privateKey">Private Key</label>
-            <input id="privateKey" disabled value={user.privateKey} />
-          </div>
-          <div className="inputContainer">
-            <label htmlFor="publicKey">Public Key</label>
-            <input id="publicKey" disabled value={user.publicKey} />
-          </div>
-          <button className="modalSubmit" type="submit">
-            OK
-          </button>
-        </form>
-      )}
+      <form className="createForm" onSubmit={handleSubmit}>
+        <div className="closeModal" onClick={closeModal}>X</div>
+        <h2>Create User</h2>
+        <div className="inputContainer">
+          <label htmlFor="username">Username</label>
+          <input id="username" onChange={(e) => setUser({ ...user, username: e.target.value })} type="text" value={user.username} />
+        </div>
+        <div className="inputContainer">
+          <label htmlFor="shareTokens">Tokens to share</label>
+          <input id="shareTokens" onChange={(e) => setUser({ ...user, shareTokens: e.target.value })} type="number" value={user.shareTokens} />
+        </div>
+        <div className="inputContainer">
+          <label htmlFor="privateKey">Private Key</label>
+          <input id="privateKey" disabled value={user.privateKey} />
+        </div>
+        <div className="inputContainer">
+          <label htmlFor="publicKey">Public Key</label>
+          <input id="publicKey" disabled value={user.publicKey} />
+        </div>
+        <button className="modalSubmit" type="submit">
+          OK
+        </button>
+      </form>
+    
     </div>
   )}

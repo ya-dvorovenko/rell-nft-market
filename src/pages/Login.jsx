@@ -1,29 +1,32 @@
 import React, { useState } from "react";
 
-export const Login = ({ loading, onLogin }) => {
+import { useAuth } from "../hooks";
 
-  const [login, setLogin] = useState("");
+export const Login = ({ handleLogin }) => {
+  const [privateKey, setPivateKey] = useState("");
+  const { auth, authLoading } = useAuth();
+  
   const handleChange = (e) => {
-    setLogin(e.target.value);
+    setPivateKey(e.target.value);
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onLogin(login);
+    const authorizedUser = await auth(privateKey);
+    handleLogin(authorizedUser);
+  }
+
+  if (authLoading) {
+    return (<div>Loading</div>);
   }
 
   return (
     <div className="loginPage">
-      {loading ?
-        <div>Loading</div> : (
-        <>
-          <h1>Login</h1>
-          <form className="loginForm" onSubmit={handleSubmit}>
-            <input required value={login} onChange={handleChange} type="text" />
-            <button>Go</button>
-          </form>
-        </>
-      )}
+      <h1>Login</h1>
+      <form className="loginForm" onSubmit={handleSubmit}>
+        <input required value={privateKey} onChange={handleChange} type="text" />
+        <button>Go</button>
+      </form>
     </div>
   );
 }

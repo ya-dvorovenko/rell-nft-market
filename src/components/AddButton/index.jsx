@@ -2,19 +2,19 @@ import { useState } from "react";
 
 import './AddButton.css';
 
-export const AddButton = ({ onUserCreate, onTokenCreate }) => {
+export const AddButton = ({ handleUserCreate, handleTokenCreate }) => {
   const [showEntitySelector, setShowEntitySelector] = useState(false);
   const handleShowEntitiesListClick = () => {
     setShowEntitySelector(!showEntitySelector);
   }
 
   const userCreateHandler = () => {
-    onUserCreate();
+    handleUserCreate();
     setShowEntitySelector(false);
   }
 
   const userTokenHandler = () => {
-    onTokenCreate();
+    handleTokenCreate();
     setShowEntitySelector(false);
   }
 

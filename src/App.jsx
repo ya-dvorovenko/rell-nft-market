@@ -3,49 +3,37 @@ import { isEmpty } from "lodash";
 
 import { LoginPage, DashboardPage } from './pages';
 import { ModalContainer, Header } from "./components"
-import { MODALS } from "./constants";
-import { useAppInit, useAuth } from "./hooks";
+import { useAppInit } from "./hooks";
 
 import './App.css';
 
 
 function App() {
-  const [showModal, setShowModal] = useState("");
+  const [activeModal, setActiveModal] = useState("");
   const [user, setUser] = useState({});
   const { connectionLoading, connected, updatedUser } = useAppInit();
+  const isLoading = connectionLoading || !connected;
+
   useEffect(() => {
     if (!isEmpty(updatedUser)) {
       setUser(updatedUser);
     };
   }, [updatedUser]);
 
-  const { auth, authLoading } = useAuth();
 
-  const handleLogin = async (privateKey) => {
-    const result = await auth(privateKey);
-    setUser(result);
+  if (isLoading) {
+    return  <div>Loading</div>
   }
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('currentUser');
-    window.location.reload(false);
-  }
-  
   return (
     <div className="App">
-      { connectionLoading || !connected ? <div>Loading</div> : (
-        <>
-          <Header balance={user.balance} username={user.username} onLogout={handleLogout} />
-          {
-            !isEmpty(user) ? (
-              <>
-                <DashboardPage showModal={setShowModal}/>
-                <ModalContainer showModal={showModal} closeModal={() => setShowModal("")} />
-              </>
-            ) : <LoginPage loading={authLoading} onLogin={handleLogin} />
-          }
-        </>
+      <Header balance={user.balance} username={user.username} />
+      {isEmpty(user) ? (
+        <LoginPage handleLogin={setUser} />
+      ) : ( 
+        <DashboardPage setActiveModal={setActiveModal}/>
       )}
+      <ModalContainer showModal={activeModal} closeModal={() => setActiveModal("")} />
     </div>
   );
 }

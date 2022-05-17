@@ -1,0 +1,102 @@
+module;
+
+entity user { 
+  key pubkey;
+  key username: text;
+}
+
+entity balance {
+  key user;
+  mutable amount: integer;
+}
+
+entity token {
+  mutable user;
+  price: integer;
+  name: text;
+  key src: text;
+}
+
+operation init(founder_pubkey: pubkey) {
+  require( (user@*{} limit 1).size() == 0 );
+  val founder = create user (founder_pubkey, "admin");
+  create balance (founder, 1000000);
+}
+
+operation create_token(user_pubkey: pubkey, price: integer, name: text, src: text) {
+  require( is_signer(user_pubkey) );
+  val creating_fee = 100;
+  val token_owner = user@{user_pubkey};
+  pay_fee(token_owner, creating_fee);
+  create token (token_owner, price, name, src);
+}
+
+operation buy_token(user_pubkey: pubkey, name: text) {
+  require( is_signer(user_pubkey) );
+  val buying_fee = 50;
+  val token = token@{name} limit 1;
+  val existing_user = user@{user_pubkey};
+  require(token.price > 0);
+  require( balance@{existing_user}.amount >= buying_fee + token.price );
+  pay_fee(existing_user, buying_fee);
+  val token_owner = token.user;
+  transfer_balance(existing_user, token_owner, token.price);	
+  update token@ {name} ( user = existing_user );
+}
+
+function transfer_balance(from:user, to:user, amount:integer){
+  require( balance@{from}.amount >= amount);
+  update balance@{from} (amount -= amount);
+  update balance@{to} (amount += amount);
+}
+
+function pay_fee (user, deduct_amount: integer) {
+  if(user.username != "admin"){
+    transfer_balance(user, user@{.username == "admin"}, deduct_amount);	
+  }
+}
+
+operation register_user (
+  existing_user_pubkey: pubkey,
+  new_user_pubkey: pubkey,
+  new_user_username: text,
+  transfer_amount: integer
+) {
+  require( is_signer(existing_user_pubkey) );
+  val registration_cost = 100;
+  val existing_user = user@{existing_user_pubkey};
+  
+  require(transfer_amount > 0 );
+  require(balance@{existing_user}.amount >= registration_cost + transfer_amount);
+  
+  val new_user = create user(new_user_pubkey, new_user_username);
+  pay_fee(existing_user, registration_cost);
+  
+  create balance(new_user, 0); 
+  transfer_balance(existing_user, new_user, transfer_amount);
+}
+
+query get_user(pubkey) {
+  return user @? {pubkey}( id = user, username = .username);
+}
+
+query get_user_by_username(username: text) {
+  return user @? {username};
+}
+
+query get_token_by_name(name: text) {
+  return token @? {name};
+}
+
+query get_balance(pubkey) {
+  return balance@{ user@{ pubkey } }.amount;
+}
+
+query get_tokens(pubkey) {
+  // Anyone able to see my tokens, let's show what we got)
+  return token@* {user@{ pubkey }}( .price, .name, .src);
+}
+
+query get_tokens_to_buy(pubkey) {
+  return token@* {.user != user@{pubkey}}( .price, .name, .src);
+}

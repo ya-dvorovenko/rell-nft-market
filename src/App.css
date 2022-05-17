@@ -57,20 +57,3 @@ html, body {
 .dashboardPage .name {
   margin: 15px 0;
 }
-
-.dashboardPage .listItem {
-  width: 300px;
-  margin-right: 30px;
-}
-
-.dashboardPage .listItem img {
-  width: 100%;
-}
-
-.dashboardPage .buyButton {
-  width: 60px;
-  display: block;
-  cursor: pointer;
-  height: 30px;
-  margin: 0 auto;
-}
